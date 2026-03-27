@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Cursos Virtual</title>
+    <link rel="stylesheet" href="login-flip.css">
+</head>
+<body>
+    <div class="flip-container">
+        <input type="checkbox" id="flip-toggle" class="flip-toggle">
+        
+        <div class="flip-card">
+            <!-- FRENTE - LOGIN -->
+            <div class="flip-front">
+                <div class="form-container">
+                    <h1>Iniciar Sesión</h1>
+                    <p class="subtitle">Bienvenido de vuelta</p>
+                    
+                    <form class="login-form">
+                        <div class="form-group">
+                            <label for="email-login">Correo electrónico</label>
+                            <input type="email" id="email-login" placeholder="tu@email.com" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="password-login">Contraseña</label>
+                            <input type="password" id="password-login" placeholder="••••••••" required>
+                        </div>
+                        
+                        <div class="remember-forgot">
+                            <label class="remember">
+                                <input type="checkbox">
+                                <span>Recuérdame</span>
+                            </label>
+                            <a href="#" class="forgot-link">¿Olvidaste tu contraseña?</a>
+                        </div>
+                        
+                        <button type="submit" class="btn-submit">Entrar</button>
+                    </form>
+                    
+                    <div class="footer-text">
+                        <p>¿No tienes cuenta? 
+                            <label for="flip-toggle" class="flip-link">Regístrate aquí</label>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- REVERSO - REGISTRO -->
+            <div class="flip-back">
+                <div class="form-container">
+                    <h1>Crear Cuenta</h1>
+                    <p class="subtitle">Únete a nuestra comunidad</p>
+                    
+                    <form class="register-form">
+                        <div class="form-group">
+                            <label for="name-register">Nombre completo</label>
+                            <input type="text" id="name-register" placeholder="Tu nombre" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email-register">Correo electrónico</label>
+                            <input type="email" id="email-register" placeholder="tu@email.com" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="password-register">Contraseña</label>
+                            <input type="password" id="password-register" placeholder="••••••••" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="password-confirm">Confirmar contraseña</label>
+                            <input type="password" id="password-confirm" placeholder="••••••••" required>
+                        </div>
+                        
+                        <label class="terms-check">
+                            <input type="checkbox" required>
+                            <span>Acepto los <a href="#">términos y condiciones</a></span>
+                        </label>
+                        
+                        <button type="submit" class="btn-submit">Registrarse</button>
+                    </form>
+                    
+                    <div class="footer-text">
+                        <p>¿Ya tienes cuenta? 
+                            <label for="flip-toggle" class="flip-link">Inicia sesión</label>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

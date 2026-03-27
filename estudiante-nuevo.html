@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="description" content="Panel del Estudiante - Cursos Virtual">
+    <meta name="theme-color" content="#667eea">
+    <title>Panel Estudiante - Cursos Virtual</title>
+
+    <link rel="stylesheet" href="index.css">
+    <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/3135/3135755.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <h2><i class="fas fa-graduation-cap"></i> Cursos Virtual</h2>
+
+        <ul>
+            <li><a href="#inicio"><i class="fas fa-home"></i> Inicio</a></li>
+            <li><a href="#cursos"><i class="fas fa-book"></i> Cursos</a></li>
+            <li><a href="#tareas"><i class="fas fa-tasks"></i> Tareas</a></li>
+            <li><a href="#perfil"><i class="fas fa-user-circle"></i> Perfil</a></li>
+        </ul>
+
+        <button onclick="logout()" class="logout"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</button>
+    </aside>
+
+    <!-- MAIN -->
+    <main>
+        <!-- HEADER -->
+        <header>
+            <h3 id="userName"><i class="fas fa-graduation-cap"></i> Estudiante</h3>
+        </header>
+
+        <!-- INICIO -->
+        <section id="inicio">
+            <h1>Hola, <span id="nombre"></span> 👋</h1>
+            <p>Continúa tu aprendizaje con nosotros</p>
+
+            <button class="btn"><i class="fas fa-play-circle"></i> Continuar Aprendiendo</button>
+
+            <!-- STATS -->
+            <div class="stats">
+                <div>
+                    <h2 id="cursosActivos">0</h2>
+                    <p>Cursos Activos</p>
+                </div>
+                <div>
+                    <h2 id="cursosCompletados">0</h2>
+                    <p>Completados</p>
+                </div>
+                <div>
+                    <h2 id="diasEstudio">0</h2>
+                    <p>Días de Estudio</p>
+                </div>
+                <div>
+                    <h2 id="promedio">0.0</h2>
+                    <p>Promedio</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- CURSOS -->
+        <section id="cursos">
+            <h2><i class="fas fa-book-open"></i> Mis Cursos</h2>
+
+            <div class="cards" id="cardsCursos">
+                <!-- Se cargarán dinámicamente -->
+            </div>
+        </section>
+
+        <!-- TAREAS -->
+        <section id="tareas">
+            <h2><i class="fas fa-list-check"></i> Tareas Pendientes</h2>
+
+            <div class="card">
+                <p><strong>📌 Variables en Python</strong></p>
+                <span>Vence: 28 Marzo</span>
+            </div>
+
+            <div class="card alert">
+                <p><strong>⚠️ Normalización de BD</strong></p>
+                <span>Vencido - Entregar pronto</span>
+            </div>
+
+            <div class="card">
+                <p><strong>📌 HTML Semántico</strong></p>
+                <span>Vence: 05 Abril</span>
+            </div>
+        </section>
+
+        <!-- PERFIL -->
+        <section id="perfil">
+            <h2><i class="fas fa-user"></i> Mi Perfil</h2>
+
+            <div class="card">
+                <p><strong>👤 Nombre:</strong> <span id="perfilNombre"></span></p>
+                <p><strong>📧 Email:</strong> <span id="perfilEmail"></span></p>
+                <p><strong>🎓 Rol:</strong> Estudiante</p>
+                <p><strong>📅 Miembro desde:</strong> Marzo 2026</p>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // VERIFICAR LOGIN Y ROL
+        if (localStorage.getItem("isLoggedIn") !== "true" || localStorage.getItem("userRole") !== "estudiante") {
+            localStorage.clear();
+            window.location.href = "index.html";
+        }
+
+        // CARGAR DATOS
+        const nombre = localStorage.getItem("userName") || "Usuario";
+        const email = localStorage.getItem("userEmail") || "";
+
+        document.getElementById("nombre").textContent = nombre;
+        document.getElementById("perfilNombre").textContent = nombre;
+        document.getElementById("perfilEmail").textContent = email;
+        document.getElementById("userName").textContent = "👨‍🎓 " + nombre;
+
+        // ========== CALCULAR ESTADÍSTICAS DINÁMICAS ==========
+        function calcularEstadisticas() {
+            const nombreEstudiante = localStorage.getItem("userName") || "Estudiante";
+            const cursos = JSON.parse(localStorage.getItem("cursos")) || [];
+            const tareas = JSON.parse(localStorage.getItem("tareas")) || [];
+            const cuestionarios = JSON.parse(localStorage.getItem("cuestionarios")) || [];
+            const entregas = JSON.parse(localStorage.getItem("entregas")) || [];
+            const respuestas = JSON.parse(localStorage.getItem("respuestas")) || [];
+            const inscripciones = JSON.parse(localStorage.getItem("inscripciones")) || [];
+
+            // Cursos inscritos
+            const cursosInscritos = inscripciones
+                .filter(i => i.estudiante === nombreEstudiante)
+                .map(i => i.cursoId);
+
+            const cursosEstudiante = cursos.filter(c => cursosInscritos.includes(c.id));
+
+            // Calcular progreso por curso
+            const progresoCursos = cursosEstudiante.map(curso => {
+                const tareasCurso = tareas.filter(t => t.cursoId === curso.id);
+                const cuestionariosCurso = cuestionarios.filter(q => q.cursoId === curso.cursoId);
+
+                let totalItems = tareasCurso.length + cuestionariosCurso.length;
+                let completados = 0;
+
+                // Tareas completadas
+                tareasCurso.forEach(tarea => {
+                    const entrega = entregas.find(e => e.tareaId === tarea.id && e.estudiante === nombreEstudiante);
+                    if (entrega && entrega.calificacion !== undefined) completados++;
+                });
+
+                // Cuestionarios completados
+                cuestionariosCurso.forEach(cuest => {
+                    const resp = respuestas.find(r => r.cuestionarioId === cuest.id && r.estudiante === nombreEstudiante);
+                    if (resp && resp.status === 'corregido') completados++;
+                });
+
+                const porcentaje = totalItems > 0 ? Math.round((completados / totalItems) * 100) : 0;
+                return { ...curso, progreso: porcentaje, estado: porcentaje === 100 ? 'Completado' : porcentaje > 0 ? 'En Progreso' : 'No Iniciado' };
+            });
+
+            // Estadísticas
+            const cursosActivos = cursosInscritos.length;
+            const cursosCompletados = progresoCursos.filter(c => c.progreso === 100).length;
+
+            // Calcular promedio
+            let totalCalificaciones = 0;
+            let numCalificaciones = 0;
+
+            entregas.filter(e => e.estudiante === nombreEstudiante && e.calificacion !== undefined).forEach(e => {
+                totalCalificaciones += e.calificacion;
+                numCalificaciones++;
+            });
+
+            respuestas.filter(r => r.estudiante === nombreEstudiante && r.teacherScore !== null && r.teacherScore !== undefined).forEach(r => {
+                totalCalificaciones += r.teacherScore;
+                numCalificaciones++;
+            });
+
+            const promedio = numCalificaciones > 0 ? (totalCalificaciones / numCalificaciones).toFixed(1) : 0.0;
+
+            // Días de estudio (basado en fechas de entregas)
+            const diasEstudio = new Set(entregas.filter(e => e.estudiante === nombreEstudiante).map(e => new Date(e.fecha).toDateString())).size;
+
+            // Actualizar HTML
+            document.getElementById("cursosActivos").textContent = cursosActivos;
+            document.getElementById("cursosCompletados").textContent = cursosCompletados;
+            document.getElementById("diasEstudio").textContent = diasEstudio;
+            document.getElementById("promedio").textContent = promedio;
+
+            // Actualizar cards de cursos
+            const cardsContainer = document.getElementById("cardsCursos");
+            cardsContainer.innerHTML = progresoCursos.map(curso => `
+                <div class="card">
+                    <h3>${curso.nombre}</h3>
+                    <p>${curso.progreso}% completado</p>
+                    <span>${curso.estado}</span>
+                </div>
+            `).join('');
+        }
+
+        calcularEstadisticas();
+
+        // LOGOUT
+        function logout() {
+            localStorage.clear();
+            window.location.href = "index.html";
+        }
+    </script>
+</body>
+</html>

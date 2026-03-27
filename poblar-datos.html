@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Poblar Datos de Prueba - Cursos Virtual</title>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 5px;
+            transition: transform 0.2s;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+        .btn-success {
+            background: linear-gradient(135deg, #10b981, #059669);
+        }
+        .data-section {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .data-section h3 {
+            margin-top: 0;
+            color: #99a9ff;
+        }
+        pre {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 Poblar Datos de Prueba</h1>
+
+        <p>Esta herramienta pobla localStorage con datos de ejemplo para probar la aplicación sin backend.</p>
+
+        <button class="btn btn-success" onclick="poblarDatos()">Poblar Todos los Datos</button>
+        <button class="btn" onclick="limpiarDatos()">Limpiar Todos los Datos</button>
+        <button class="btn" onclick="verDatos()">Ver Datos Actuales</button>
+
+        <div class="data-section">
+            <h3>📋 Datos que se crearán:</h3>
+            <ul>
+                <li><strong>1 Profesor:</strong> profesor@test.com / 123456</li>
+                <li><strong>3 Estudiantes:</strong> estudiante1@test.com, estudiante2@test.com, estudiante3@test.com / 123456</li>
+                <li><strong>4 Cursos</strong> con tareas y cuestionarios</li>
+                <li><strong>Inscripciones y entregas</strong> de ejemplo</li>
+            </ul>
+        </div>
+
+        <div class="data-section">
+            <h3>🔑 Credenciales de Prueba:</h3>
+            <pre>
+Profesor:
+- Email: profesor@test.com
+- Contraseña: 123456
+
+Estudiantes:
+- estudiante1@test.com / 123456
+- estudiante2@test.com / 123456
+- estudiante3@test.com / 123456
+            </pre>
+        </div>
+
+        <div class="data-section">
+            <h3>📊 Datos Actuales en localStorage:</h3>
+            <pre id="datosActuales">Haz clic en "Ver Datos Actuales" para mostrar</pre>
+        </div>
+    </div>
+
+    <script>
+        function poblarDatos() {
+            // Datos de ejemplo
+            const datos = {
+                usuarios: [
+                    {
+                        id: 'prof-1',
+                        nombre: 'Profesor Juan Pérez',
+                        email: 'profesor@test.com',
+                        password: '123456',
+                        rol: 'profesor',
+                        fechaRegistro: new Date().toISOString()
+                    },
+                    {
+                        id: 'est-1',
+                        nombre: 'María García',
+                        email: 'estudiante1@test.com',
+                        password: '123456',
+                        rol: 'estudiante',
+                        fechaRegistro: new Date().toISOString()
+                    },
+                    {
+                        id: 'est-2',
+                        nombre: 'Carlos López',
+                        email: 'estudiante2@test.com',
+                        password: '123456',
+                        rol: 'estudiante',
+                        fechaRegistro: new Date().toISOString()
+                    },
+                    {
+                        id: 'est-3',
+                        nombre: 'Ana Rodríguez',
+                        email: 'estudiante3@test.com',
+                        password: '123456',
+                        rol: 'estudiante',
+                        fechaRegistro: new Date().toISOString()
+                    }
+                ],
+                cursos: [
+                    {
+                        id: 'curso-1',
+                        nombre: 'Introducción a la Programación con Python',
+                        descripcion: 'Aprende los fundamentos de la programación usando Python.',
+                        profesorId: 'prof-1',
+                        nivel: 'Básico',
+                        duracion: 40,
+                        precio: 0,
+                        fecha: new Date().toLocaleDateString('es-ES')
+                    },
+                    {
+                        id: 'curso-2',
+                        nombre: 'Desarrollo Web con HTML, CSS y JavaScript',
+                        descripcion: 'Crea sitios web interactivos desde cero.',
+                        profesorId: 'prof-1',
+                        nivel: 'Intermedio',
+                        duracion: 60,
+                        precio: 25,
+                        fecha: new Date().toLocaleDateString('es-ES')
+                    },
+                    {
+                        id: 'curso-3',
+                        nombre: 'Bases de Datos con MySQL',
+                        descripcion: 'Diseña y administra bases de datos relacionales.',
+                        profesorId: 'prof-1',
+                        nivel: 'Intermedio',
+                        duracion: 45,
+                        precio: 20,
+                        fecha: new Date().toLocaleDateString('es-ES')
+                    },
+                    {
+                        id: 'curso-4',
+                        nombre: 'Algoritmos y Estructuras de Datos',
+                        descripcion: 'Fundamentos matemáticos de la programación.',
+                        profesorId: 'prof-1',
+                        nivel: 'Avanzado',
+                        duracion: 80,
+                        precio: 30,
+                        fecha: new Date().toLocaleDateString('es-ES')
+                    }
+                ],
+                tareas: [
+                    {
+                        id: 'tarea-1',
+                        titulo: 'Variables y Tipos de Datos en Python',
+                        descripcion: 'Ejercicios básicos sobre variables, strings, números y booleanos.',
+                        cursoId: 'curso-1',
+                        profesorId: 'prof-1',
+                        fecha: new Date().toLocaleDateString('es-ES'),
+                        vencimiento: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toLocaleDateString('es-ES')
+                    },
+                    {
+                        id: 'tarea-2',
+                        titulo: 'Estructuras de Control',
+                        descripcion: 'Proyecto: Calculadora simple con condicionales y bucles.',
+                        cursoId: 'curso-1',
+                        profesorId: 'prof-1',
+                        fecha: new Date().toLocaleDateString('es-ES'),
+                        vencimiento: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toLocaleDateString('es-ES')
+                    },
+                    {
+                        id: 'tarea-3',
+                        titulo: 'HTML Semántico',
+                        descripcion: 'Crear una página web con estructura semántica correcta.',
+                        cursoId: 'curso-2',
+                        profesorId: 'prof-1',
+                        fecha: new Date().toLocaleDateString('es-ES'),
+                        vencimiento: new Date(Date.now() + 10 * 24 * 60 * 60 * 1000).toLocaleDateString('es-ES')
+                    }
+                ],
+                cuestionarios: [
+                    {
+                        id: 'cuest-1',
+                        titulo: 'Cuestionario Final - Python Básico',
+                        cursoId: 'curso-1',
+                        profesorId: 'prof-1',
+                        preguntas: [
+                            {
+                                pregunta: '¿Cuál es la función para imprimir en Python?',
+                                opciones: ['print()', 'echo()', 'console.log()', 'printf()'],
+                                respuestaCorrecta: 0
+                            },
+                            {
+                                pregunta: '¿Qué tipo de dato es "Hola Mundo"?',
+                                opciones: ['int', 'float', 'str', 'bool'],
+                                respuestaCorrecta: 2
+                            }
+                        ],
+                        fecha: new Date().toLocaleDateString('es-ES')
+                    },
+                    {
+                        id: 'cuest-2',
+                        titulo: 'Evaluación - Desarrollo Web',
+                        cursoId: 'curso-2',
+                        profesorId: 'prof-1',
+                        preguntas: [
+                            {
+                                pregunta: '¿Qué significa CSS?',
+                                opciones: ['Computer Style Sheets', 'Cascading Style Sheets', 'Creative Style Sheets', 'Colorful Style Sheets'],
+                                respuestaCorrecta: 1
+                            }
+                        ],
+                        fecha: new Date().toLocaleDateString('es-ES')
+                    }
+                ],
+                inscripciones: [
+                    {
+                        estudianteId: 'est-1',
+                        cursoId: 'curso-1',
+                        fecha: new Date().toISOString(),
+                        estado: 'aprobado'
+                    },
+                    {
+                        estudianteId: 'est-2',
+                        cursoId: 'curso-2',
+                        fecha: new Date().toISOString(),
+                        estado: 'pendiente'
+                    },
+                    {
+                        estudianteId: 'est-3',
+                        cursoId: 'curso-1',
+                        fecha: new Date().toISOString(),
+                        estado: 'aprobado'
+                    }
+                ],
+                entregas: [
+                    {
+                        id: 'ent-1',
+                        tareaId: 'tarea-1',
+                        estudiante: 'María García',
+                        archivo: 'tarea1.py',
+                        fecha: new Date().toISOString(),
+                        calificacion: 95,
+                        comentario: 'Excelente trabajo, muy bien estructurado.'
+                    },
+                    {
+                        id: 'ent-2',
+                        tareaId: 'tarea-3',
+                        estudiante: 'Carlos López',
+                        archivo: 'index.html',
+                        fecha: new Date().toISOString(),
+                        calificacion: null,
+                        comentario: ''
+                    }
+                ],
+                respuestas: [
+                    {
+                        id: 'resp-1',
+                        cuestionarioId: 'cuest-1',
+                        estudiante: 'María García',
+                        respuestas: [0, 2],
+                        puntuacion: 100,
+                        teacherScore: 95,
+                        status: 'corregido',
+                        fecha: new Date().toISOString()
+                    }
+                ]
+            };
+
+            // Guardar en localStorage
+            Object.keys(datos).forEach(key => {
+                localStorage.setItem(key, JSON.stringify(datos[key]));
+            });
+
+            alert('✅ Datos de prueba poblados exitosamente en localStorage!');
+            verDatos();
+        }
+
+        function limpiarDatos() {
+            const keys = ['usuarios', 'cursos', 'tareas', 'cuestionarios', 'inscripciones', 'entregas', 'respuestas'];
+            keys.forEach(key => localStorage.removeItem(key));
+            alert('🗑️ Todos los datos han sido eliminados de localStorage.');
+            verDatos();
+        }
+
+        function verDatos() {
+            const keys = ['usuarios', 'cursos', 'tareas', 'cuestionarios', 'inscripciones', 'entregas', 'respuestas'];
+            let output = '';
+
+            keys.forEach(key => {
+                const data = localStorage.getItem(key);
+                if (data) {
+                    const parsed = JSON.parse(data);
+                    output += `${key.toUpperCase()}: ${parsed.length} elementos\n`;
+                } else {
+                    output += `${key.toUpperCase()}: vacío\n`;
+                }
+            });
+
+            document.getElementById('datosActuales').textContent = output || 'No hay datos';
+        }
+
+        // Mostrar datos al cargar
+        verDatos();
+    </script>
+</body>
+</html>
